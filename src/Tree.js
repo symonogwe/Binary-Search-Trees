@@ -121,6 +121,30 @@ class Tree {
     }
     return this._find(root.right, value);
   }
+
+  // level order method
+  levelOrder(callback = null) {
+    const queue = [this.root];
+
+    if (callback === null) {
+      const arr = [];
+      while (queue.length > 0) {
+        const current = queue.shift();
+
+        arr.push(current.data);
+        if (current.left !== null) queue.push(current.left);
+        if (current.right !== null) queue.push(current.right);
+      }
+      return arr;
+    }
+    while (queue.length > 0) {
+      const current = queue.shift();
+
+      callback(current);
+      if (current.left !== null) queue.push(current.left);
+      if (current.right !== null) queue.push(current.right);
+    }
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -148,3 +172,15 @@ console.log(
 );
 
 console.log(newTree.find(6345));
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+console.log(newTree.levelOrder());
+
+console.log(
+  newTree.levelOrder((value) => {
+    console.log(value.data * 2);
+  })
+);
