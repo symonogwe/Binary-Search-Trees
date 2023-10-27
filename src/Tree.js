@@ -73,7 +73,6 @@ class Tree {
   }
 
   _recursiveDelete(root, value) {
-    // base case
     if (root === null) return root;
 
     if (value < root.data) {
@@ -108,6 +107,20 @@ class Tree {
     }
     return current.data;
   }
+
+  // find method
+  find(value) {
+    return this._find(this.root, value);
+  }
+
+  _find(root, value) {
+    if (root === null || root.data === value) return root;
+
+    if (value < root.data) {
+      return this._find(root.left, value);
+    }
+    return this._find(root.right, value);
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -127,5 +140,11 @@ console.log(
   "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 );
 
-newTree.delete(8);
+newTree.delete(5);
 newTree.prettyPrint(newTree.root);
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+console.log(newTree.find(6345));
