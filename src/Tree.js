@@ -66,6 +66,48 @@ class Tree {
 
     return root;
   }
+
+  // delete method
+  delete(value) {
+    this.root = this._recursiveDelete(this.root, value);
+  }
+
+  _recursiveDelete(root, value) {
+    // base case
+    if (root === null) return root;
+
+    if (value < root.data) {
+      root.left = this._recursiveDelete(root.left, value);
+    } else if (value > root.data) {
+      root.right = this._recursiveDelete(root.right, value);
+    } else {
+      // node to be deleted is found
+
+      // node with one child/ no child
+      if (root.left === null) {
+        return root.right;
+      }
+      if (root.right === null) {
+        return root.left;
+      }
+
+      // node with 2 children: get the in-order successor (smallest in right subtree)
+      root.data = this._minValueNode(root.right);
+
+      // delete the in-order successor
+      root.right = this._recursiveDelete(root.right, root.data);
+    }
+    return root;
+  }
+
+  _minValueNode(root) {
+    let current = root;
+
+    while (current.left !== null) {
+      current = current.left;
+    }
+    return current.data;
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -74,9 +116,16 @@ console.log(newTree.root);
 newTree.prettyPrint(newTree.root);
 
 console.log(
-  "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 );
 
 newTree.insert(2);
 newTree.insert(363747);
+newTree.prettyPrint(newTree.root);
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+newTree.delete(8);
 newTree.prettyPrint(newTree.root);
