@@ -145,6 +145,57 @@ class Tree {
       if (current.right !== null) queue.push(current.right);
     }
   }
+
+  // in-order method
+  inOrder(root, callback = null) {
+    const dataArr = [];
+
+    function traversal(node) {
+      if (node === null) return;
+
+      traversal(node.left);
+      if (callback) {
+        callback(node.data);
+      } else {
+        dataArr.push(node.data);
+      }
+      traversal(node.right);
+    }
+
+    traversal(root);
+    return dataArr;
+  }
+
+  // pre-order method
+  preOrder(root, callback = null) {
+    const dataArr = [];
+
+    function traversal(node) {
+      if (node === null) return;
+
+      if (callback) {
+        callback(node.data);
+      } else {
+        dataArr.push(node.data);
+      }
+
+      traversal(node.left);
+      traversal(node.right);
+    }
+
+    traversal(root);
+    return dataArr;
+  }
+
+  // height method
+  height(root) {
+    if (root === null) return -1;
+
+    const leftHeight = this.height(root.left);
+    const rightHeight = this.height(root.right);
+
+    return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -184,3 +235,29 @@ console.log(
     console.log(value.data * 2);
   })
 );
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+console.log(newTree.inOrder(newTree.root));
+
+newTree.inOrder(newTree.root, (value) => {
+  console.log(value * 2);
+});
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+console.log(newTree.preOrder(newTree.root));
+
+newTree.inOrder(newTree.root, (value) => {
+  console.log(value * 2);
+});
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+console.log(newTree.height(newTree.root));
