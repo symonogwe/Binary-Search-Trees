@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import Node from "./Node";
-import removeDuplicates from "./utilities";
+import { removeDuplicates, randomNumbers } from "./utilities";
 
 class Tree {
   #privateSortedArr;
@@ -187,6 +187,27 @@ class Tree {
     return dataArr;
   }
 
+  // post-order method
+  postOrder(root, callback = null) {
+    const dataArr = [];
+
+    function traversal(node) {
+      if (node === null) return;
+
+      traversal(node.left);
+      traversal(node.right);
+
+      if (callback) {
+        callback(node.data);
+      } else {
+        dataArr.push(node.data);
+      }
+    }
+
+    traversal(root);
+    return dataArr;
+  }
+
   // height method
   height(root) {
     if (root === null) return -1;
@@ -213,77 +234,21 @@ class Tree {
     }
     return -1;
   }
+
+  // isBalanced method
+  isBalanced(root) {
+    const leftHeight = this.height(root.left);
+    const rightHeight = this.height(root.right);
+
+    if (leftHeight - rightHeight > 1 || rightHeight - leftHeight > 1)
+      return "not balanced";
+    return "balanced";
+  }
+
+  // reBalance method
+  rebalance(root) {
+    const elementsArr = this.inOrder(root);
+
+    this.root = this.buildTree(elementsArr, 0, elementsArr.length - 1);
+  }
 }
-
-const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-
-console.log(newTree.root);
-newTree.prettyPrint(newTree.root);
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-newTree.insert(2);
-newTree.insert(363747);
-newTree.prettyPrint(newTree.root);
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-newTree.delete(5);
-newTree.prettyPrint(newTree.root);
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-console.log(newTree.find(6345));
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-console.log(newTree.levelOrder());
-
-console.log(
-  newTree.levelOrder((value) => {
-    console.log(value.data * 2);
-  })
-);
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-console.log(newTree.inOrder(newTree.root));
-
-newTree.inOrder(newTree.root, (value) => {
-  console.log(value * 2);
-});
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-console.log(newTree.preOrder(newTree.root));
-
-newTree.inOrder(newTree.root, (value) => {
-  console.log(value * 2);
-});
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-console.log(newTree.height(newTree.root));
-
-console.log(
-  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-);
-
-const nodeDepth = newTree.find(2);
-console.log(nodeDepth);
-
-console.log(newTree.depth(newTree.root, nodeDepth));

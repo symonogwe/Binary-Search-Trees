@@ -46,11 +46,23 @@ function mergeSort(arr) {
   return merge(sorted1, sorted2, arr);
 }
 
-export default function removeDuplicates(arr) {
+export function removeDuplicates(arr) {
   const sortedArr = mergeSort(arr);
   const newArr = sortedArr.filter(
     (item, index, self) => self.indexOf(item) === index
   );
 
   return newArr;
+}
+
+// random number function
+export function randomNumbers() {
+  const arr = [];
+
+  while (arr.length <= 15) {
+    const random = Math.floor(Math.random() * 100);
+    arr.push(random);
+  }
+
+  return arr;
 }
