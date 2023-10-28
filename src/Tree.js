@@ -196,6 +196,23 @@ class Tree {
 
     return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
   }
+
+  // depth method
+  depth(node, target, depth = 0) {
+    if (node === null) return -1;
+    if (node === target) return depth;
+
+    const leftDepth = this.depth(node.left, target, depth + 1);
+    const rightDepth = this.depth(node.right, target, depth + 1);
+
+    if (leftDepth >= 0) {
+      return leftDepth;
+    }
+    if (rightDepth >= 0) {
+      return rightDepth;
+    }
+    return -1;
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
@@ -261,3 +278,12 @@ console.log(
 );
 
 console.log(newTree.height(newTree.root));
+
+console.log(
+  "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+);
+
+const nodeDepth = newTree.find(2);
+console.log(nodeDepth);
+
+console.log(newTree.depth(newTree.root, nodeDepth));
